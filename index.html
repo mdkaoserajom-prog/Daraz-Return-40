@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daraz Return 40</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+<style>
+:root{
+  --primary:#3f00a3;
+  --bg:#f4f4f4;
+  --card:#fff;
+  --text:#333;
+  --muted:#777;
+  --radius:12px;
+  --shadow:0 4px 12px rgba(255, 0, 0, 0.08);
+}
+* { box-sizing:border-box; margin:0; padding:0; user-select:none; }
+input, textarea { user-select:text; }
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);padding-bottom:80px;}
+header {
+  position: relative;
+  padding: 16px;
+  background: var(--primary);
+  color: #ffffff;
+}
+
+header .logo h1 {
+  font-size: 22px;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+/* ✅ Search box container */
+.search-container {
+  position: relative;
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* 🔍 Search Icon (বামে) */
+.search-icon {
+  position: absolute;
+  left: 12px;
+  color: #777;
+  font-size: 20px;
+}
+
+/* ⚙️ Filter Icon (ডানে) */
+.filter-icon {
+  position: absolute;
+  right: 12px;
+  color: #777;
+  font-size: 22px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.filter-icon:hover {
+  color: var(--primary);
+}
+
+/* ✏️ Input Style */
+#searchBar {
+  width: 100%;
+  padding: 12px 40px 12px 38px;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #333;
+}
+.no-product {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: var(--muted);
+  text-align: center;
+  width: 100%;
+}
+
+
+
+.category-bar { display: flex; flex-wrap: nowrap; overflow-x: auto; padding: 10px; background: #fff; border-bottom: 1px solid #ddd; gap: 10px; }
+.category-bar button { flex: 0 0 auto; padding: 6px 14px; border-radius: 20px; border: none; background: #eee; cursor: pointer; transition: 0.2s; color: var(--text);}
+.category-bar button.active { background: var(--primary); color: #fff; }
+
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;padding:12px;}
+.product-card{background:var(--card);border-radius:var(--radius);overflow:hidden;position:relative;display:flex;flex-direction:column;transition:0.3s;cursor:pointer;}
+.product-card:hover{border:1px solid var(--primary);box-shadow:0 4px 12px rgba(0,0,0,0.1);}
+.product-image-wrapper{position:relative;width:100%;height:160px;}
+.product-image-wrapper img{width:100%;height:100%;object-fit:cover;}
+.product-info{padding:8px;display:flex;flex-direction:column;gap:4px;}
+.product-info h3{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.price{font-weight:bold;color:#ff0000;font-size:14px;}
+.price .old-price{color:#777;text-decoration:line-through;font-size:12px;margin-right:6px;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #eee;display:flex;justify-content:space-around;padding:8px 0;box-shadow:0 -2px 6px rgba(0,0,0,0.05);z-index:10;}
+.bottom-nav div{text-align:center;font-size:12px;color:var(--muted);cursor:pointer;display:flex;flex-direction:column;align-items:center;}
+.bottom-nav .active{color:var(--primary);font-weight:600;}
+.material-icons-outlined{font-size:20px;display:block;}
+#loader { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 6px solid #f3f3f3; border-top: 6px solid var(--primary); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; z-index: 100;}
+@keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+
+/* Favorite button */
+.fav-btn {
+  position: absolute;
+  top: 180px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 20px;
+  color: #777;
+}
+.fav-btn.active {
+  color: red;
+}
+
+/* 💰 Filter Popup */
+.filter-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  z-index: 999;
+  width: 90%;
+  max-width: 320px;
+  display: none;
+}
+.filter-popup h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: var(--primary);
+}
+.filter-popup input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+.filter-popup button {
+  width: 48%;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+.filter-popup .apply-btn {
+  background: var(--primary);
+  color: #fff;
+}
+.filter-popup .cancel-btn {
+  background: #eee;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><h1 id="storeName">Daraz Return 40</h1></div>
+  <div class="search-container">
+    <span class="material-icons-outlined search-icon">search</span>
+    <input type="text" placeholder="পণ্য খুঁজুন..." id="searchBar">
+    <span class="material-icons-outlined filter-icon" id="filterIcon">tune</span>
+  </div>
+</header>
+
+
+<div class="category-bar" id="categoryBar">
+  <button class="active" data-category="all">সব</button>
+  <button data-category="electronics">ইলেকট্রনিকস</button>
+  <button data-category="fashion">ফ্যাশন</button>
+  <button data-category="home_kitchen">হোম & কিচেন</button>
+  <button data-category="beauty_personal_care">বিউটি & পার্সোনাল কেয়ার</button>
+  <button data-category="books_stationery">বই & স্টেশনারি</button>
+  <button data-category="sports_outdoors">স্পোর্টস & আউটডোরস</button>
+  <button data-category="toys_baby">টয়স & বেবি প্রোডাক্ট</button>
+  <button data-category="automotive_tools">অটোমোটিভ & টুলস</button>
+  <button data-category="grocery_food">গ্রোসারি & ফুড</button>
+  <button data-category="misc_others">অন্যান্য</button>
+</div>
+
+<main>
+  <div id="loader"></div>
+  <section class="product-grid" id="productGrid" style="display:none;"></section>
+</main>
+
+<!-- 💰 Filter Popup -->
+<div class="filter-popup" id="filterPopup">
+  <h3>মূল্য নির্ধারণ করুন</h3>
+  <input type="number" id="minPrice" placeholder="সর্বনিম্ন মূল্য (৳)">
+  <input type="number" id="maxPrice" placeholder="সর্বোচ্চ মূল্য (৳)">
+  <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;">
+    <button class="cancel-btn" id="cancelFilter">বাতিল</button>
+    <button class="apply-btn" id="applyFilter">প্রয়োগ</button>
+    <button class="cancel-btn" id="resetFilter" style="width:100%;margin-top:6px;">রিসেট</button>
+  </div>
+</div>
+
+
+<div class="bottom-nav">
+  <div data-page="index.html"><span class="material-icons-outlined">home</span>Home</div>
+  <div data-page="return.html"><span class="material-icons-outlined">assignment_return</span>Return</div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyD6CcdwOQWEMVrtE6GmDGoFiqqR3Y9Gtfs",
+  authDomain: "daraz-7f9f5.firebaseapp.com",
+  projectId: "daraz-7f9f5",
+  storageBucket: "daraz-7f9f5.appspot.com",
+  messagingSenderId: "509707486739",
+  appId: "1:509707486739:web:f44a16a4e8d261362361e6",
+  measurementId: "G-5B4C6B0527"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const productGrid = document.getElementById('productGrid');
+const loader = document.getElementById('loader');
+const searchBar = document.getElementById('searchBar');
+const categoryBar = document.getElementById('categoryBar');
+const filterPopup = document.getElementById('filterPopup');
+const filterIcon = document.getElementById('filterIcon');
+
+let allProducts = [];
+
+function showLoader(){ loader.style.display='block'; productGrid.style.display='none'; }
+function hideLoader(){ loader.style.display='none'; productGrid.style.display='grid'; }
+
+function getFavs(){ return JSON.parse(localStorage.getItem('favourites') || '[]'); }
+function isFav(id){ return getFavs().includes(id); }
+
+function toggleFav(id, btn){
+  let favs = getFavs();
+  if(favs.includes(id)){
+    favs = favs.filter(f=>f!==id);
+    btn.classList.remove('active');
+  } else {
+    favs.push(id);
+    btn.classList.add('active');
+  }
+  localStorage.setItem('favourites', JSON.stringify(favs));
+}
+
+function renderProducts(list){
+  productGrid.innerHTML='';
+
+  if(list.length===0){
+  productGrid.innerHTML=`
+    <p class="no-product">এই দামের মধ্যে কোনো প্রোডাক্ট নেই।</p>
+  `;
+  return;
+}
+
+
+  const favs = getFavs();
+  const favProducts = list.filter(p => favs.includes(p.productId));
+  const normalProducts = list.filter(p => !favs.includes(p.productId));
+  const sortedList = [...favProducts, ...normalProducts];
+
+  sortedList.forEach(product=>{
+    const div = document.createElement('div');
+    div.className='product-card';
+    div.setAttribute('data-category', product.category || 'all');
+
+    const oldPrice = (product.price * 1.4).toFixed(0);
+
+    div.innerHTML=`
+      <div class="product-image-wrapper">
+        <img src="${product.mainImage}" alt="${product.title}">
+        <div class="fav-btn material-icons-outlined ${isFav(product.productId)?'active':''}" data-id="${product.productId}">
+          favorite
+        </div>
+      </div>
+      <div class="product-info">
+        <h3>${product.title}</h3>
+        <p class="price">
+          <span class="old-price">৳${oldPrice}</span>
+          ৳${product.price}
+        </p>
+      </div>
+    `;
+
+    div.addEventListener('click', ()=>{ if(product.productLink) window.open(product.productLink,"_blank"); });
+    productGrid.appendChild(div);
+
+    const favBtn = div.querySelector('.fav-btn');
+    favBtn.addEventListener('click', e=>{
+      e.stopPropagation();
+      toggleFav(product.productId, favBtn);
+      renderProducts(list);
+    });
+  });
+}
+
+async function loadProducts(){
+  showLoader();
+  try{
+    const snap = await db.collection("products").orderBy("timestamp","desc").get();
+    allProducts=[];
+    snap.forEach(doc=>allProducts.push({...doc.data(), productId: doc.id}));
+    renderProducts(allProducts);
+  }catch(err){
+    console.error(err);
+    productGrid.innerHTML='<p style="padding:20px;text-align:center;">ডাটা লোড করতে সমস্যা হচ্ছে।</p>';
+  }finally{ hideLoader(); }
+}
+
+loadProducts();
+
+// Search
+searchBar.addEventListener('input', e=>{
+  const query=e.target.value.toLowerCase();
+  document.querySelectorAll('.product-card').forEach(card=>{
+    const title=card.querySelector('h3').textContent.toLowerCase();
+    card.style.display = title.includes(query)?'flex':'none';
+  });
+});
+
+// Category filter
+categoryBar.querySelectorAll('button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const selectedCategory = btn.dataset.category;
+    categoryBar.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const filtered = allProducts.filter(p => selectedCategory==='all' || (p.category || 'all').toLowerCase()===selectedCategory.toLowerCase());
+    
+    if(filtered.length === 0){
+      productGrid.innerHTML = `<p class="no-product">এই ক্যাটাগরির মধ্যে কোনো প্রোডাক্ট নেই।</p>`;
+    } else {
+      renderProducts(filtered);
+    }
+  });
+});
+
+
+// 🔄 Reset Filter
+document.getElementById('resetFilter').addEventListener('click', ()=>{
+  document.getElementById('minPrice').value = '';
+  document.getElementById('maxPrice').value = '';
+  renderProducts(allProducts); // সব প্রোডাক্ট আবার দেখাবে
+  filterPopup.style.display = 'none';
+});
+
+
+// Bottom nav
+document.querySelectorAll('.bottom-nav div').forEach(nav=>{
+  const page=nav.dataset.page;
+  nav.setAttribute("onclick",`window.location.href='${page}'`);
+});
+const currentPage=window.location.pathname.split('/').pop().split('?')[0];
+document.querySelectorAll('.bottom-nav div').forEach(nav=>{
+  if(nav.dataset.page===currentPage) nav.classList.add('active');
+  else nav.classList.remove('active');
+});
+
+// 💰 Filter Popup Actions
+filterIcon.addEventListener('click', ()=> filterPopup.style.display='block');
+document.getElementById('cancelFilter').addEventListener('click', ()=> filterPopup.style.display='none');
+document.getElementById('applyFilter').addEventListener('click', ()=>{
+  const min = parseFloat(document.getElementById('minPrice').value) || 0;
+  const max = parseFloat(document.getElementById('maxPrice').value) || Infinity;
+  const filtered = allProducts.filter(p=>p.price>=min && p.price<=max);
+  renderProducts(filtered);
+  filterPopup.style.display='none';
+});
+</script>
+</body>
+</html>

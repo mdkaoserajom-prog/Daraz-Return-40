@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyStockBD — Return Policy</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+<style>
+:root{
+  --primary:#3f00a3;
+  --bg:#f4f4f4;
+  --card:#fff;
+  --text:#333;
+  --muted:#555;
+  --radius:12px;
+  --shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);padding-bottom:80px;}
+header{position:relative;padding:20px;background:var(--primary);color:#fff;text-align:center;}
+header h1{font-size:22px;}
+main{padding:16px;}
+.card{background:var(--card);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow);}
+.card h2{font-size:18px;color:var(--primary);margin-bottom:8px;}
+.card p{font-size:14px;line-height:1.5;color:var(--muted);}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #eee;display:flex;justify-content:space-around;padding:8px 0;box-shadow:0 -2px 6px rgba(0,0,0,0.05);z-index:10;}
+.bottom-nav div{text-align:center;font-size:12px;color:var(--muted);cursor:pointer;display:flex;flex-direction:column;align-items:center;}
+.bottom-nav .active{color:var(--primary);font-weight:600;}
+.material-icons-outlined{font-size:20px;display:block;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Return & Refund Info</h1>
+</header>
+
+<main>
+  <div class="card">
+    <h2>১. রিটার্নযোগ্য সময়সীমা</h2>
+    <p>
+      Daraz-এ কেনা প্রোডাক্ট সাধারণত <strong>৭ দিন</strong> এর মধ্যে রিটার্ন করা যায়। প্রোডাক্টটি অবশ্যই অক্ষত, ব্যবহৃত নয় এবং প্রোডাক্টের মূল প্যাকেজসহ থাকা আবশ্যক।
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>২. রিটার্ন করার ধাপসমূহ</h2>
+    <p>
+      ১) Daraz অ্যাপ/ওয়েবসাইটে লগইন করুন।<br>
+      ২) <strong>My Orders</strong> থেকে রিটার্ন করতে চান এমন অর্ডারটি নির্বাচন করুন।<br>
+      ৩) <strong>Return/Refund</strong> অপশন এ ক্লিক করুন।<br>
+      ৪) রিটার্নের কারণ নির্বাচন করুন এবং প্রয়োজন হলে ছবি আপলোড করুন।<br>
+      ৫) Daraz এর নির্দেশনা অনুযায়ী প্যাকেজটি পাঠান। 
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>৩. রিটার্ন শিপিং</h2>
+    <p>
+      Daraz প্রায়ই <strong>ফ্রি শিপিং</strong> সুবিধা দেয় রিটার্নের ক্ষেত্রে। প্যাকেজটি ঠিকঠাকভাবে মোড়ানো এবং লেবেলযুক্ত করতে ভুলবেন না।
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>৪. রিফান্ড প্রসেসিং</h2>
+    <p>
+      রিটার্ন প্রোডাক্ট Daraz গ্রহণ করার পর, সাধারণত <strong>৩-৭ কার্যদিবস</strong> এর মধ্যে রিফান্ড আপনার পেমেন্ট মেথডে জমা হবে। ব্যাংক বা ওয়ালেট প্রসেসিং সময় ভিন্ন হতে পারে।
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>৫. গুরুত্বপূর্ণ টিপস</h2>
+    <p>
+      - শুধুমাত্র অর্ডারকৃত প্রোডাক্ট রিটার্ন করুন।<br>
+      - প্রোডাক্ট ক্ষতিগ্রস্ত বা ব্যবহার করা থাকলে রিটার্ন বাতিল হতে পারে।<br>
+      - কোনো সমস্যা হলে Daraz কাস্টমার কেয়ার এর সাথে যোগাযোগ করুন।
+    </p>
+  </div>
+</main>
+
+<div class="bottom-nav">
+  <div data-page="index.html"><span class="material-icons-outlined">home</span>Home</div>
+  <div data-page="return.html"><span class="material-icons-outlined">assignment_return</span>Return</div>
+</div>
+
+<script>
+// Bottom nav functionality
+document.querySelectorAll('.bottom-nav div').forEach(nav=>{
+  const page=nav.dataset.page;
+  nav.setAttribute("onclick",`window.location.href='${page}'`);
+});
+const currentPage=window.location.pathname.split('/').pop().split('?')[0];
+document.querySelectorAll('.bottom-nav div').forEach(nav=>{
+  if(nav.dataset.page===currentPage) nav.classList.add('active');
+  else nav.classList.remove('active');
+});
+</script>
+
+</body>
+</html>
